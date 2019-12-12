@@ -27,8 +27,9 @@ async function saveToys() {
           toyName.innerText = toy.name;
           toyImage.setAttribute("class", "toy-avatar");
           toyImage.src = toy.image;
-          likes.innerText = toy.likes;
+          likes.innerText = `${toy.likes} Likes`;
           likeBtn.setAttribute("class", "like-btn");
+          likeBtn.innerText = `Like ${toy.name}`;
           card.appendChild(toyName);
           card.appendChild(toyImage);
           card.appendChild(likes);
