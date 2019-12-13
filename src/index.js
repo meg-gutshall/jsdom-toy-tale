@@ -4,12 +4,12 @@ async function fetchToys() {
 };
 
 async function formSubmit() {
-  const submitBtn = await document.querySelector(".add-toy-form input")
+  const submitBtn = await document.querySelector(".add-toy-form input.submit")
   submitBtn.addEventListener("click", saveNewToy);
 };
 
 // Save toy to database
-function saveNewToy() {
+async function saveNewToy(name, image) {
   let formData = {
     name: name,
     image: image,
@@ -26,10 +26,8 @@ function saveNewToy() {
   };
 
   // Fetch newly created toy
-  fetch("http://localhost:3000/toys", obj)
-    .then(resp => resp.json())
-    .then(toy => console.log(toy))
-    .catch(error => console.log(error.message));
+  const resp = await fetch("http://localhost:3000/toys", obj);
+  return data = await resp.json();
 };
 
 // Render newly created toy
