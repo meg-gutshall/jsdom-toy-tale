@@ -1,20 +1,18 @@
-// Declare global variables
 const toyCollection = document.getElementById("toy-collection");
 let addToy = false
 
-// Define fetch that returns all toys after being fed into the card builder function
 function renderToys() {
   return fetch("http://localhost:3000/toys")
-  .then(resp => resp.json())
-  .then(function(allToys) {
-    allToys.forEach(toy => { buildCard(toy) });
-  })
-  .catch(error => console.log(error.message));
+    .then(resp => resp.json())
+    .then(function(allToys) {
+      allToys.forEach(toy => { buildCard(toy) });
+    })
+    .catch(error => console.log(error.message));
 };
 
-// Save new toy to database
-function saveNewToy(event_data) {
+function addNewToy(event_data) {
   let formData = {
+    // Pass info from the event (submission of the form) to populate this object
     name: event_data.name.value,
     image: event_data.image.value,
     likes: 0
@@ -29,7 +27,6 @@ function saveNewToy(event_data) {
     body: JSON.stringify(formData)
   };
   
-  // Fetch and render newly created toy after feeding it into the card builder function
   return fetch("http://localhost:3000/toys", obj)
     .then(resp => resp.json())
     .then(function(newToy) {
@@ -45,7 +42,6 @@ function addLike(event) {
   let toyID = elID.charAt(elID.length - 1);
 
   function updateLikeCount() {
-    let toyCard = document.getElementById(`card-${toyID}`);
     let likes = document.querySelector(`#card-${toyID} p`);
     likes.innerText = `${newNum} Likes`;
   };
@@ -59,7 +55,6 @@ function addLike(event) {
     body: JSON.stringify({likes: newNum})
   };
 
-  // Fetch and render newly created toy after feeding it into the card builder function
   fetch(`http://localhost:3000/toys/${toyID}`, obj)
     .then(resp => resp.json())
     .then(function(updatedToy) {
@@ -68,7 +63,7 @@ function addLike(event) {
     .catch(error => console.log(error.message));
 };
 
-// Build card that encapsulates toy
+// Build card that encapsulates toy object for display
 function buildCard(toy){
   const card = document.createElement("div")
   card.setAttribute("class", "card");
@@ -94,7 +89,6 @@ function buildCard(toy){
   toyCollection.appendChild(card);
 };
 
-// Run displayToys and formSubmit functions on load
 document.addEventListener("DOMContentLoaded", function() {
   renderToys();
 });
@@ -103,16 +97,15 @@ document.addEventListener("DOMContentLoaded", function() {
   const addBtn = document.querySelector("#new-toy-btn")
   const toyForm = document.querySelector(".container")
   addBtn.addEventListener("click", () => {
-    addToy = !addToy
+    addToy = !addToy;
     if (addToy) {
-      toyForm.style.display = "block"
+      toyForm.style.display = "block";
       toyForm.addEventListener("submit", function(e) {
         event.preventDefault();
-        saveNewToy(event.target);
+        addNewToy(event.target);
       })
     } else {
-      toyForm.style.display = "none"
+      toyForm.style.display = "none";
     }
   })
-
-})
+});
