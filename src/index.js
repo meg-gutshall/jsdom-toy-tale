@@ -31,17 +31,50 @@ function saveNewToy(event_data) {
   
   // Fetch and render newly created toy after feeding it into the card builder function
   return fetch("http://localhost:3000/toys", obj)
-  .then(resp => resp.json())
-  .then(function(newToy) {
-    buildCard(newToy);
-  })
-  .catch(error => console.log(error.message));
+    .then(resp => resp.json())
+    .then(function(newToy) {
+      buildCard(newToy);
+    })
+    .catch(error => console.log(error.message));
+};
+
+function addLike(event) {
+  let likeCount = event.target.previousSibling.innerText;
+  let newNum = parseInt(likeCount.charAt(0)) + 1;
+  let elID = event.target.parentNode.id;
+  let toyID = elID.charAt(elID.length - 1);
+
+  // debugger
+  function updateLikeCount() {
+    let card = document.getElementById(toyID);
+    let likes = document.querySelector(`card-${toy.id} p`);
+    likes.innerText = `${newNum} Likes`;
+  };
+
+  let obj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({likes: newNum})
+  };
+
+  // Fetch and render newly created toy after feeding it into the card builder function
+  fetch(`http://localhost:3000/toys/${toyID}`, obj)
+    .then(resp => resp.json())
+    .then(function(updatedToy) {
+      debugger
+      updateLikeCount(updatedToy);
+    })
+    .catch(error => console.log(error.message));
 };
 
 // Build card that encapsulates toy
 function buildCard(toy){
   const card = document.createElement("div")
   card.setAttribute("class", "card");
+  card.setAttribute("id", `card-${toy.id}`);
   
   let toyName = document.createElement("h2");
   let toyImage = document.createElement("img");
@@ -54,6 +87,11 @@ function buildCard(toy){
   likeBtn.setAttribute("class", "like-btn");
   likeBtn.innerText = `Like ${toy.name}`;
   card.append(toyName, toyImage, likes, likeBtn);
+
+  likeBtn.addEventListener("click", function(e) {
+    event.preventDefault();
+    addLike(e);
+  });
   
   toyCollection.appendChild(card);
 };
