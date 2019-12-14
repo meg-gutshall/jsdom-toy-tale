@@ -44,10 +44,9 @@ function addLike(event) {
   let elID = event.target.parentNode.id;
   let toyID = elID.charAt(elID.length - 1);
 
-  // debugger
   function updateLikeCount() {
-    let card = document.getElementById(toyID);
-    let likes = document.querySelector(`card-${toy.id} p`);
+    let toyCard = document.getElementById(`card-${toyID}`);
+    let likes = document.querySelector(`#card-${toyID} p`);
     likes.innerText = `${newNum} Likes`;
   };
 
@@ -64,7 +63,6 @@ function addLike(event) {
   fetch(`http://localhost:3000/toys/${toyID}`, obj)
     .then(resp => resp.json())
     .then(function(updatedToy) {
-      debugger
       updateLikeCount(updatedToy);
     })
     .catch(error => console.log(error.message));
