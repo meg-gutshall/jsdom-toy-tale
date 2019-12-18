@@ -5,7 +5,10 @@ function renderToys() {
   return fetch("http://localhost:3000/toys")
     .then(resp => resp.json())
     .then(function(allToys) {
-      allToys.forEach(toy => { buildCard(toy) });
+      allToys.forEach(toy => { 
+        debugger
+        buildCard(toy) 
+      });
     })
     .catch(error => console.log(error.message));
 };
@@ -90,6 +93,7 @@ function buildCard(toy){
 };
 
 document.addEventListener("DOMContentLoaded", function() {
+  debugger
   renderToys();
 });
 
