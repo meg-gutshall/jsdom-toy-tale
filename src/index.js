@@ -93,7 +93,6 @@ function buildCard(toy){
 };
 
 document.addEventListener("DOMContentLoaded", function() {
-  debugger
   renderToys();
 });
 
